@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="css/nv.d3.css" rel="stylesheet" type="text/css">
+    <script src="js/d3.min.js" charset="utf-8"></script>
+    <script src="js/nv.d3.js"></script>
+
+    <style>
+        text {
+            font: 12px sans-serif;
+        }
+        svg {
+            display: block;
+        }
+        html, body, svg {
+            margin: 00px;
+            padding: 00px;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+     <title>Un día de Subte</title>
+</head>
+<body class='with-3d-shadow with-transitions'>
+
+
+<svg id="chart1"></svg>
+
+<script>
+
+    var histcatexplong = [
+        {
+            "key" : "Línea A" ,
+            "values" : [
+[ 5, 804],
+[ 6, 3578],
+[ 7, 12942],
+[ 8, 20279],
+[ 9, 17478],
+[ 10, 14234],
+[ 11, 14183],
+[ 12, 15560],
+[ 13, 15994],
+[ 14, 15186],
+[ 15, 15679],
+[ 16, 16761],
+[ 17, 20554],
+[ 18, 20825],
+[ 19, 12626],
+[ 20, 8863],
+[ 21, 5582],
+[ 22, 1769],
+[ 23, 91]]
+
+        } ,
+        {
+            "key" : "Línea B" ,
+            "values" : [ [ 5, 1186],
+[ 6, 5632],
+[ 7, 18984],
+[ 8, 30038],
+[ 9, 26861],
+[ 10, 22064],
+[ 11, 22413],
+[ 12, 24438],
+[ 13, 24476],
+[ 14, 23605],
+[ 15, 24209],
+[ 16, 26200],
+[ 17, 33243],
+[ 18, 35085],
+[ 19, 20674],
+[ 20, 14176],
+[ 21, 7022],
+[ 22, 2920],
+[ 23, 108]
+]
+
+        } ,
+
+        {
+            "key" : "Línea C" ,
+            "values" : [ 
+[ 5, 2711],
+[ 6, 8485],
+[ 7, 15198],
+[ 8, 20288],
+[ 9, 18197],
+[ 10, 13019],
+[ 11, 11542],
+[ 12, 11574],
+[ 13, 11934],
+[ 14, 11492],
+[ 15, 11750],
+[ 16, 12834],
+[ 17, 16216],
+[ 18, 17361],
+[ 19, 9592],
+[ 20, 6234],
+[ 21, 3696],
+[ 22, 1079],
+[ 23, 28]]
+
+
+
+        } ,
+        {
+            "key" : "Línea D" ,
+            "values" : [ 
+[ 5, 670],
+[ 6, 3846],
+[ 7, 15036],
+[ 8, 25485],
+[ 9, 23880],
+[ 10, 20021],
+[ 11, 20288],
+[ 12, 22558],
+[ 13, 23292],
+[ 14, 21948],
+[ 15, 22861],
+[ 16, 25118],
+[ 17, 29904],
+[ 18, 31680],
+[ 19, 19941],
+[ 20, 14468],
+[ 21, 8905],
+[ 22, 2545],
+[ 23, 66]]
+
+
+
+
+        } ,
+        {
+            "key" : "Línea E" ,
+            "values" : [ 
+[ 5, 500],
+[ 6, 2180],
+[ 7, 6540],
+[ 8, 9376],
+[ 9, 7746],
+[ 10, 5318],
+[ 11, 5532],
+[ 12, 5573],
+[ 13, 5177],
+[ 14, 4622],
+[ 15, 4922],
+[ 16, 5584],
+[ 17, 7772],
+[ 18, 7727],
+[ 19, 4129],
+[ 20, 3080],
+[ 21, 2116],
+[ 22, 1153],
+[ 23, 37]]
+
+
+
+        } 
+
+       
+    ];
+
+
+  var colors = d3.scale.ordinal()
+       .range(["#3088F0", "#F05868", "#6944e3", "#40B868", "#ab2fe3"]);
+
+    var keyColor = function(d, i) {return colors(d.key)};
+
+    var chart;
+    nv.addGraph(function() {
+        chart = nv.models.stackedAreaChart()
+            .useInteractiveGuideline(true)
+            .x(function(d) { return d[0] })
+            .y(function(d) { return d[1] })
+            .controlLabels({stacked: "Apilar", stream: "Corriente", expanded:"Porcentaje"})
+            .color(keyColor)
+            .duration(300);
+
+        chart.xAxis.tickFormat(function(d) { 
+            
+               
+               return d ; 
+              
+        });
+        chart.yAxis.tickFormat(d3.format(''));
+
+        d3.select('#chart1')
+            .datum(histcatexplong)
+            .transition().duration(1000)
+            .call(chart)
+            .each('start', function() {
+                setTimeout(function() {
+                    d3.selectAll('#chart1 *').each(function() {
+                        if(this.__transition__)
+                            this.__transition__.duration = 1;
+                    })
+                }, 0)
+            });
+
+        nv.utils.windowResize(chart.update);
+        return chart;
+    });
+
+</script>
+</body>
+</html>
